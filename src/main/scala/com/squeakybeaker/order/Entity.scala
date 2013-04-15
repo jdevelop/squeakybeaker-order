@@ -16,6 +16,8 @@ object Entity {
 
     case class Order(items: Seq[OrderItem])
 
+    case class Menu(soups: Seq[OrderItem], specials: Seq[OrderItem], sandwiches: Seq[OrderItem])
+
   }
 
   object Users {

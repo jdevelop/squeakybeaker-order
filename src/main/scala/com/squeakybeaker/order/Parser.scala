@@ -11,7 +11,7 @@ import org.jsoup.nodes.{Element, Document}
  */
 object Parser {
 
-  case class Menu(soups: Seq[OrderItem], specials: Seq[OrderItem], sandwiches: Seq[OrderItem])
+
 
   trait MenuParser {
 
