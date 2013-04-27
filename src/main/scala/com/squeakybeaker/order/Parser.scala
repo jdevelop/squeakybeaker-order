@@ -12,7 +12,6 @@ import org.jsoup.nodes.{Element, Document}
 object Parser {
 
 
-
   trait MenuParser {
 
     def parse(is: InputStream): Seq[OrderItem]

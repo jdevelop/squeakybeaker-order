@@ -1,9 +1,27 @@
 <div class="lift:surround?with=default;at=content">
-  <h2>Welcome to your project!</h2>
-  <p>
-    <div class="lift:helloWorld.howdy">
-      Welcome to squeakybeaker-order at <span id="time">The current time</span>
-    </div>
-  </p>
+    <table class="orderMenu">
+        <tr>
+            <th>Soups</th>
+            <th>Sandwiches</th>
+            <th>Specials</th>
+        </tr>
+        <tr>
+            <td class="lift:MenuList.listSoups">
+                <ul id="soups" class="listItems">
+                    <li><input id="soup" name="soup" type="radio" value="?"/><span id="souptxt">?</span></li>
+                </ul>
+            </td>
+            <td class="lift:MenuList.listSandwiches">
+                <ul id="sandwiches" class="listItems">
+                    <li><input id="sandwich" name="sandwich" type="radio" value="?"/><span id="sandwichtxt">?</span></li>
+                </ul>
+            </td>
+            <td class="lift:MenuList.listSpecials">
+                <ul id="specials" class="listItems">
+                    <li><input id="special" name="special" type="radio" value="?"/><span id="specialtxt">?</span></li>
+                </ul>
+            </td>
+        </tr>
+    </table>
 </div>
 
