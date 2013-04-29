@@ -1,6 +1,7 @@
 package com.squeakybeaker.order
 
-import com.squeakybeaker.order.Entity.Orders.{ItemType, OrderItem}
+import com.squeakybeaker.order.model.Entity
+import Entity.Orders.{ItemType, OrderItem}
 import java.io.InputStream
 import org.jsoup.Jsoup
 import org.jsoup.nodes.{Element, Document}

@@ -1,7 +1,8 @@
 package com.squeakybeaker.order
 
 import org.scalatest.FlatSpec
-import com.squeakybeaker.order.Entity.Orders.{OrderItem, ItemType}
+import com.squeakybeaker.order.model.Entity
+import Entity.Orders.{OrderItem, ItemType}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
 

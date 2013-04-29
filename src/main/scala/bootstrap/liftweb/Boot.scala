@@ -7,6 +7,7 @@ import _root_.net.liftweb.http.provider._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.mapper.{DB, Schemifier, DefaultConnectionIdentifier, StandardDBVendor}
 import _root_.com.squeakybeaker.order.model._
+import com.squeakybeaker.order.model.Entity.OrdersPersistence.OrderItemP
 
 
 /**
@@ -29,7 +30,7 @@ class Boot {
 
     // where to search snippet
     LiftRules.addToPackages("com.squeakybeaker.order")
-    Schemifier.schemify(true, Schemifier.infoF _, User)
+    Schemifier.schemify(true, Schemifier.infoF _, User, OrderItemP)
 
     // Build SiteMap
     def sitemap() = SiteMap(

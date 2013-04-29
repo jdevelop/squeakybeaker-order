@@ -1,7 +1,8 @@
 package com.squeakybeaker.order
 
-import com.squeakybeaker.order.Entity.Orders.{ItemType, OrderItem}
-import com.squeakybeaker.order.Entity.Orders.ItemType._
+import com.squeakybeaker.order.model.Entity
+import Entity.Orders.{ItemType, OrderItem}
+import Entity.Orders.ItemType._
 
 /**
  * User: Eugene Dzhurinsky
