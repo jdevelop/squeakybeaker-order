@@ -33,7 +33,9 @@ class Boot {
 
     // Build SiteMap
     def sitemap() = SiteMap(
-      Menu("Home") / "index" >> User.AddUserMenusAfter // Simple menu form
+      Menu("Home") / "index",
+      Menu("Order") / "order" >>
+        User.AddUserMenusAfter // Simple menu form
       )
 
     LiftRules.setSiteMapFunc(() => User.sitemapMutator(sitemap()))
