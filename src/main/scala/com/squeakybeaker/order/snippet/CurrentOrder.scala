@@ -6,6 +6,7 @@ import java.util.Calendar
 import net.liftweb.util._
 import Helpers._
 import java.text.SimpleDateFormat
+import com.squeakybeaker.order.model.DateProvider
 
 
 /**
@@ -15,10 +16,8 @@ import java.text.SimpleDateFormat
 object CurrentOrder {
 
   def listSummary = {
-    val calendar = Calendar.getInstance()
-    val today = new java.sql.Date(calendar.getTimeInMillis)
-    calendar.add(Calendar.DATE, -1)
-    val yesterday = new java.sql.Date(calendar.getTimeInMillis)
+    val today = new java.sql.Date(DateProvider.getCurrentDate.getTime)
+    val yesterday = new java.sql.Date(DateProvider.getPrevDate.getTime)
     val currentItems = DB.runQuery("select orderItem, count(*) as cnt from orderitems where orderdate = ? group by orderItem", List(today))._2
     val yesterdayItems = DB.runQuery("select orderItem, count(*) as cnt from orderitems where orderdate = ? group by orderItem", List(yesterday))._2
 
