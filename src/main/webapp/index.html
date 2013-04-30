@@ -1,3 +1,31 @@
 <div class="lift:surround?with=default;at=content">
-    Current order for today
+    <div class="lift:CurrentOrder.listSummary">
+        <table class="summaryMenu">
+            <tr>
+                <th colspan="2" class="heading">Current order</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <th>Count</th>
+            </tr>
+            <tr id="today">
+                <td id="todayName" class="left"></td>
+                <td id="todayCount" class="center"></td>
+            </tr>
+        </table>
+        <hr/>
+        <table class="summaryMenu">
+            <tr>
+                <th colspan="2" class="heading">Yesterdayz order</th>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <th>Count</th>
+            </tr>
+            <tr id="yesterday">
+                <td id="yesterdayName" class="left"></td>
+                <td id="yesterdayCount" class="center"></td>
+            </tr>
+        </table>
+    </div>
 </div>
