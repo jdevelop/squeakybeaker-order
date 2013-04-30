@@ -36,6 +36,8 @@ object Entity {
 
       object orderItem extends MappedText(this)
 
+      object orderItemType extends MappedEnum(this, Orders.ItemType)
+
     }
 
     object OrderItemP extends OrderItemP with LongKeyedMetaMapper[OrderItemP] {
@@ -48,7 +50,8 @@ object Entity {
       OrderItemP.create.
         orderDate(p._2).
         username(p._1).
-        orderItem(item.name)
+        orderItem(item.name).
+        orderItemType(item.kind)
     }
 
   }
