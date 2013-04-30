@@ -5,6 +5,7 @@ import java.util.Calendar
 
 import net.liftweb.util._
 import Helpers._
+import java.text.SimpleDateFormat
 
 
 /**
@@ -27,7 +28,9 @@ object CurrentOrder {
       }
     }
 
-    "#today *" #> currentItems.map(mapItems("today")) &
+    "#todayDate *" #> new SimpleDateFormat("MM-dd-yyyy").format(today) &
+      "#yesterdayDate *" #> new SimpleDateFormat("MM-dd-yyyy").format(yesterday) &
+      "#today *" #> currentItems.map(mapItems("today")) &
       "#yesterday *" #> yesterdayItems.map(mapItems("yesterday"))
   }
 
