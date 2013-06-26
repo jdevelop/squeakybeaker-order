@@ -1,1 +1,3 @@
-# Properties in this file will be read when running in dev mode
+gmail_oauth_callback=http://localhost:8080/oauth2callback
+gmail_oauth_secret=uWkhdfdDDEfnLWRkn6u4pGVd
+gmail_oauth_client=68380318299.apps.googleusercontent.com

@@ -8,7 +8,7 @@ import scala.slick.session.{Session, Database}
  */
 trait DBAware {
 
-  val dao = DB.profileSettings._3
+  lazy val dao = DB.profileSettings._3
 
   implicit def session: Session = Database.threadLocalSession
 

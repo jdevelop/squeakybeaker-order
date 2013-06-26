@@ -35,23 +35,24 @@ object Entity {
 
       def * = email ~ displayName ~ password
 
-      def insertNew(username: String, displayName: String)(implicit s: Session) = {
-        UserP.insert((username, displayName, md5(username + System.currentTimeMillis().toString)))
-      }
+    }
 
-      def lookup(username: String)(implicit s: Session) = {
-        val q = for (
-          c <- UserP if UserP.email === username
-        ) yield c
-        q.take(1).list().headOption.map {
-          case (uname, dname, pwd) => User(uname, dname)
-        }
-      }
+    def createNew(username: String, displayName: String)(implicit s: Session) = {
+      UserP.insert((username, displayName, md5(username + System.currentTimeMillis().toString)))
+      User(username,displayName)
+    }
 
-      private def md5(s: String) = {
-        MessageDigest.getInstance("MD5").digest(s.getBytes).map("%02X".format(_)).mkString
+    def lookup(username: String)(implicit s: Session) = {
+      val q = for (
+        c <- UserP if UserP.email === username
+      ) yield c
+      q.take(1).list().headOption.map {
+        case (uname, dname, pwd) => User(uname, dname)
       }
+    }
 
+    private def md5(s: String) = {
+      MessageDigest.getInstance("MD5").digest(s.getBytes).map("%02X".format(_)).mkString
     }
 
   }

@@ -5,9 +5,12 @@ import _root_.net.liftweb.http._
 import _root_.net.liftweb.http.provider._
 import _root_.net.liftweb.sitemap._
 import _root_.net.liftweb.sitemap.Loc._
-import net.liftweb.util.LoanWrapper
+import net.liftweb.util.{Props, LoanWrapper}
 import com.squeakybeaker.order.lib.{DB, UserSession}
 import net.liftweb.sitemap.Loc.If
+import com.squeakybeaker.order.authentication.{OAuthTransport, OAuth2Google}
+import com.squeakybeaker.order.dispatch.VerifyUserToken
+import com.squeakybeaker.order.model.DAO
 
 
 /**
@@ -45,6 +48,23 @@ class Boot {
     LiftRules.early.append(makeUtf8)
 
     LiftRules.loggedInTest = Full(() => UserSession.loggedIn_?)
+
+    val tokenVerifier = new OAuth2Google(access) with OAuthTransport
+
+    val googleConfig = OAuth2Google.GoogleConfig(
+      Props.get("gmail_oauth_callback", ""),
+      Props.get("gmail_oauth_client", ""),
+      Props.get("gmail_oauth_secret", ""))
+
+    val googleLogin = Some {
+      OAuth2Google.requestAccessToken(googleConfig) _
+    }
+
+    LiftRules.dispatch.append {
+      case Req("oauth2callback" :: Nil, _, _) =>
+        VerifyUserToken.verifyGoogleOauthToken(tokenVerifier, googleLogin) _
+    }
+
 
     LiftRules.allAround.append {
       new LoanWrapper {
