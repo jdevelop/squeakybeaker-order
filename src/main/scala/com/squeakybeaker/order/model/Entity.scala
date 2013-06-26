@@ -44,7 +44,7 @@ object Entity {
 
     def lookup(username: String)(implicit s: Session) = {
       val q = for (
-        c <- UserP if UserP.email === username
+        c <- UserP if c.email === username
       ) yield c
       q.take(1).list().headOption.map {
         case (uname, dname, pwd) => User(uname, dname)

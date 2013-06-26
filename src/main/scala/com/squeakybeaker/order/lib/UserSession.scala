@@ -9,6 +9,8 @@ import com.squeakybeaker.order.model.Entity.User
  */
 object UserSession extends SessionVar[User](null){
 
-  def loggedIn_? = is == null
+  def loggedIn_? = is != null
+
+  def anonymous_? = is == null
 
 }

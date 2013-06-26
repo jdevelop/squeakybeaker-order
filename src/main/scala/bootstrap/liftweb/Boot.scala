@@ -26,7 +26,7 @@ class Boot {
     def sitemap() = SiteMap(
       Menu("Home") / "index",
       Menu("Order") / "order" >> If (UserSession.loggedIn_? _, S ? "Login required"),
-      Menu("Login") / "login"
+      Menu("Login") / "login" >> If (UserSession.anonymous_? _, S ? "Already authenticated")
     )
 
     val (db, dbAccess, access) = DB.profileSettings
