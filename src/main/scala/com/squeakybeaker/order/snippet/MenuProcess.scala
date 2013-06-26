@@ -1,21 +1,18 @@
 package com.squeakybeaker.order.snippet
 
-import com.squeakybeaker.order.model.{DateProvider, Entity, User}
-import com.squeakybeaker.order.model.Entity.Orders.{ItemType, OrderItem}
-import java.util.Date
+import com.squeakybeaker.order.model.DateProvider
 import net.liftweb.http.{SHtml, S}
 
 import net.liftweb.util._
 import Helpers._
-import com.squeakybeaker.order.model.Entity.OrdersPersistence.OrderItemP
-import net.liftweb.mapper.{By, DB}
-import net.liftweb.db.DefaultConnectionIdentifier
+import com.squeakybeaker.order.lib.{DBAware, UserSession}
+import com.squeakybeaker.order.model.Entity.{OrderItem, ItemType, OrderItemView}
 
 /**
  * User: Eugene Dzhurinsky
  * Date: 4/30/13
  */
-object MenuProcess {
+object MenuProcess extends DBAware {
 
   def render = {
     var special = ""
@@ -23,7 +20,7 @@ object MenuProcess {
     var sandwich = ""
 
     def process() = {
-      if (User.loggedIn_?) {
+      if (UserSession.loggedIn_?) {
 
         def option[T](param: String, f: => T): Option[T] = {
           if ("" == param) {
@@ -33,30 +30,23 @@ object MenuProcess {
           }
         }
 
-        val sandwichItem = option(sandwich, OrderItem(ItemType.Sandwich, sandwich))
-        val soupItem = option(soup, OrderItem(ItemType.Soup, soup))
-        val specialItem = option(special, OrderItem(ItemType.Special, special))
-        val email = User.currentUser.get.email.is
-        val currentDate = DateProvider.getCurrentDate()
+        val sandwichItem = option(sandwich, OrderItemView(ItemType.Sandwich, sandwich))
+        val soupItem = option(soup, OrderItemView(ItemType.Soup, soup))
+        val specialItem = option(special, OrderItemView(ItemType.Special, special))
+        val email = UserSession.is.email
+        val currentDate = new java.sql.Date(DateProvider.getCurrentDate().getTime)
         implicit val p = (email, currentDate)
         // TODO some validation here
-        import Entity.OrdersPersistence.persistOrder
-        DB.use(DefaultConnectionIdentifier) {
-          case dbh => DB.prepareStatement("delete from " + OrderItemP.dbTableName + " where username=? and orderdate=?", dbh) {
-            case psth =>
-              psth.setString(1, email);
-              psth.setDate(2, new java.sql.Date(currentDate.getTime))
-              psth.execute()
-          }
+        val user = UserSession.is
+        dao.removeCurrentOrder(user, new java.sql.Date(currentDate.getTime))
+        List(sandwichItem, soupItem, specialItem).flatten.foreach {
+          case it: OrderItemView => dao.addRecord(user, OrderItem(it.itemName, currentDate, user.email, it.itemType))
         }
-        sandwichItem.foreach(_.save())
-        soupItem.foreach(_.save())
-        specialItem.foreach(_.save())
       }
       S.redirectTo("/index")
     }
 
-    if (User.loggedIn_?) {
+    if (UserSession.loggedIn_?) {
       "name=soup" #> SHtml.onSubmit(soup = _) &
         "name=special" #> SHtml.onSubmit(special = _) &
         "name=sandwich" #> SHtml.onSubmit(sandwich = _) &

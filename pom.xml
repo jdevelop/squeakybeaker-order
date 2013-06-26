@@ -12,14 +12,11 @@
   <name>squeakybeaker-order</name>
   <inceptionYear>2013</inceptionYear>
   <properties>
-    <scala.version>2.9.2</scala.version>
+    <scala.version>2.10.0</scala.version>
+    <lift.version>2.5</lift.version>
     <!-- Common plugin settings -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>${project.build.sourceEncoding}</project.reporting.outputEncoding>
-    <!-- vscaladoc settings -->
-    <maven.scaladoc.vscaladocVersion>1.2-m1</maven.scaladoc.vscaladocVersion>
-    <vscaladoc.links.liftweb.pathsufix>scaladocs/</vscaladoc.links.liftweb.pathsufix>
-    <vscaladoc.links.liftweb.baseurl>http://scala-tools.org/mvnsites/liftweb</vscaladoc.links.liftweb.baseurl>
   </properties>
 
   <repositories>
@@ -31,11 +28,6 @@
   </repositories>
 
   <dependencies>
-    <dependency>
-      <groupId>net.liftweb</groupId>
-      <artifactId>lift-mapper_2.9.1</artifactId>
-      <version>2.4-M5</version>
-    </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
@@ -52,9 +44,29 @@
       <version>4.2.1</version>
     </dependency>
     <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-webkit_2.10</artifactId>
+      <version>${lift.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-webkit_2.10</artifactId>
+      <version>${lift.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.liftweb</groupId>
+      <artifactId>lift-testkit_2.10</artifactId>
+      <version>${lift.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.typesafe.slick</groupId>
+      <artifactId>slick_2.10</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
       <groupId>org.scalatest</groupId>
-      <artifactId>scalatest_2.9.2</artifactId>
-      <version>2.0.M6-SNAP3</version>
+      <artifactId>scalatest_2.10</artifactId>
+      <version>2.0.M6-SNAP20</version>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -154,21 +166,6 @@
         <configuration>
           <contextPath>/</contextPath>
           <scanIntervalSeconds>5</scanIntervalSeconds>
-        </configuration>
-      </plugin>
-      <plugin>
-        <groupId>net.sf.alchim</groupId>
-        <artifactId>yuicompressor-maven-plugin</artifactId>
-        <version>0.7.1</version>
-        <executions>
-          <execution>
-            <goals>
-              <goal>compress</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <nosuffix>true</nosuffix>
         </configuration>
       </plugin>
     </plugins>

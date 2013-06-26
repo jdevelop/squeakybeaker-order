@@ -1,13 +1,12 @@
 package com.squeakybeaker.order
 
-import com.squeakybeaker.order.model.Entity
-import Entity.Orders.{OrderItem, ItemType}
 import java.io.InputStream
 import org.apache.http.impl.conn.PoolingClientConnectionManager
 import org.apache.http.impl.client.DefaultHttpClient
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.HttpStatus
+import com.squeakybeaker.order.model.Entity.{OrderItemView, OrderItem, ItemType}
 
 /**
  * User: Eugene Dzhurinsky
@@ -42,7 +41,7 @@ object Datasource {
       }
     }
 
-    def getData(kind: ItemType.Value): Option[Seq[OrderItem]] = {
+    def getData(kind: ItemType.Value): Option[Seq[OrderItemView]] = {
       import ItemType._
       val stream = kind match {
         case Soup => new HttpSource("http://www.squeakybeaker.com/")

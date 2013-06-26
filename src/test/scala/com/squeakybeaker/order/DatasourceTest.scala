@@ -1,10 +1,9 @@
 package com.squeakybeaker.order
 
 import org.scalatest.FlatSpec
-import com.squeakybeaker.order.model.Entity
-import Entity.Orders.ItemType
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import com.squeakybeaker.order.model.Entity.ItemType
 
 /**
  * User: Eugene Dzhurinsky

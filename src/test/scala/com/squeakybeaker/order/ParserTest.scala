@@ -1,10 +1,9 @@
 package com.squeakybeaker.order
 
 import org.scalatest.FlatSpec
-import com.squeakybeaker.order.model.Entity
-import Entity.Orders.{OrderItem, ItemType}
 import org.junit.runner.RunWith
 import org.scalatest.junit.JUnitRunner
+import com.squeakybeaker.order.model.Entity.{OrderItemView, ItemType}
 
 /**
  * User: Eugene Dzhurinsky
@@ -26,7 +25,7 @@ class ParserTest extends FlatSpec {
   it should "correctly parse specials" in {
     val parser = getParser(ItemType.Special)
     val specials = parser.parse(classOf[ParserTest].getResourceAsStream("/index.html"))
-    assert(Seq(OrderItem(ItemType.Special, "Mac and Cheese with Ham and Greens Salad 10.95")) === specials)
+    assert(Seq(OrderItemView(ItemType.Special, "Mac and Cheese with Ham and Greens Salad 10.95")) === specials)
   }
 
   it should "correctly parse sandwiches" in {

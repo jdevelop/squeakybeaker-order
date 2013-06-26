@@ -4,9 +4,8 @@ import net.liftweb.util._
 import Helpers._
 
 import com.squeakybeaker.order.Datasource.Datasources
-import com.squeakybeaker.order.model.Entity
-import Entity.Orders.{OrderItem, ItemType}
 import scala.xml.{NodeSeq, Text}
+import com.squeakybeaker.order.model.Entity.{OrderItemView, ItemType}
 
 /**
  * User: Eugene Dzhurinsky
@@ -15,12 +14,12 @@ import scala.xml.{NodeSeq, Text}
 object MenuList {
 
   private def list(kind: ItemType.Value, lst: String, item: String)(in: NodeSeq): NodeSeq = {
-    val itemz: Option[Seq[OrderItem]] = Datasources.getData(kind)
+    val itemz: Option[Seq[OrderItemView]] = Datasources.getData(kind)
     itemz match {
       case Some(list) => {
         ("#" + lst + " *") #> list.map {
-          case mItem: OrderItem => ("#" + item + " [value]") #> mItem.name &
-            ("#" + item + "txt *") #> mItem.name
+          case mItem: OrderItemView => ("#" + item + " [value]") #> mItem.itemName &
+            ("#" + item + "txt *") #> mItem.itemName
         }
       }.apply(in)
       case None => Text("Oops")

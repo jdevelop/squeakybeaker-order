@@ -1,8 +1,7 @@
 package com.squeakybeaker.order.model
 
-import net.liftweb.mapper._
-import com.squeakybeaker.order.model.Entity.Orders.OrderItem
-import java.util.Date
+import java.sql.Date
+import java.security.MessageDigest
 
 /**
  * User: Eugene Dzhurinsky
@@ -10,48 +9,93 @@ import java.util.Date
  */
 object Entity {
 
-  object Orders {
+  object ItemType extends Enumeration {
+    val Soup, Sandwich, Special = Value
+  }
 
-    object ItemType extends Enumeration {
-      val Soup, Sandwich, Special = Value
+  case class User(email: String, displayName: String)
+
+  case class OrderItem(itemName: String, placed: Date, username: String, itemType: ItemType.Value)
+
+  case class OrderItemView(itemType: ItemType.Value, itemName: String)
+
+  trait UserPersistence {
+
+    this: DatabaseProfile =>
+
+    import profile.simple._
+
+    object UserP extends Table[(String, String, String)]("users") {
+
+      def email = column[String]("email", O.NotNull)
+
+      def displayName = column[String]("display_name", O.NotNull)
+
+      def password = column[String]("password", O.NotNull)
+
+      def * = email ~ displayName ~ password
+
+      def insertNew(username: String, displayName: String)(implicit s: Session) = {
+        UserP.insert((username, displayName, md5(username + System.currentTimeMillis().toString)))
+      }
+
+      def lookup(username: String)(implicit s: Session) = {
+        val q = for (
+          c <- UserP if UserP.email === username
+        ) yield c
+        q.take(1).list().headOption.map {
+          case (uname, dname, pwd) => User(uname, dname)
+        }
+      }
+
+      private def md5(s: String) = {
+        MessageDigest.getInstance("MD5").digest(s.getBytes).map("%02X".format(_)).mkString
+      }
+
     }
-
-    case class OrderItem(kind: ItemType.Value, name: String)
 
   }
 
-  object OrdersPersistence {
+  trait OrdersPersistence {
 
-    class OrderItemP extends LongKeyedMapper[OrderItemP] {
+    this: DatabaseProfile =>
 
-      override def getSingleton = OrderItemP
+    import profile.simple._
 
-      def primaryKeyField = id
+    object OrderItemP extends Table[(String, Date, String, String)]("orders") {
+      def itemName = column[String]("item_name", O.NotNull)
 
-      object id extends MappedLongIndex(this)
+      def placeDate = column[Date]("place_date", O.NotNull)
 
-      object username extends MappedString(this, 50)
+      def username = column[String]("username", O.NotNull)
 
-      object orderDate extends MappedDate(this)
+      def itemType = column[String]("item_type", O.NotNull)
 
-      object orderItem extends MappedText(this)
-
-      object orderItemType extends MappedEnum(this, Orders.ItemType)
-
+      def * = itemName ~ placeDate ~ username ~ itemType
     }
 
-    object OrderItemP extends OrderItemP with LongKeyedMetaMapper[OrderItemP] {
-
-      override def dbTableName = "orderitems"
-
+    def addRecord(itemName: String, placed: Date, username: String, itemType: ItemType.Value)(implicit s: Session) = {
+      OrderItemP.insert((itemName, placed, username, itemType.toString))
+      OrderItem(itemName, placed, username, itemType)
     }
 
-    implicit def persistOrder(item: OrderItem)(implicit p: (String, Date)) = {
-      OrderItemP.create.
-        orderDate(p._2).
-        username(p._1).
-        orderItem(item.name).
-        orderItemType(item.kind)
+    def addRecord(user: User, item: OrderItem)(implicit s: Session) {
+      OrderItemP.insert((item.itemName, item.placed, user.email, item.itemType.toString))
+    }
+
+    def aggregateRecords(date: Date)(implicit s: Session): List[(String, Int)] = {
+      val q = for {
+        oi <- OrderItemP if oi.placeDate === date
+      } yield oi
+      q.groupBy(_.itemName).map {
+        row => (row._1, row._1.length)
+      }.list
+    }
+
+    def removeCurrentOrder(user: User, date: Date)(implicit s: Session) {
+      (for {
+        oi <- OrderItemP if oi.username === user.email && oi.placeDate === date
+      } yield oi).delete
     }
 
   }

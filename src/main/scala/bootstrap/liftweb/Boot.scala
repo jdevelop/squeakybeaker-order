@@ -1,13 +1,13 @@
 package bootstrap.liftweb
 
-import _root_.net.liftweb.util._
-import _root_.net.liftweb.common._
+ import _root_.net.liftweb.common._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.http.provider._
 import _root_.net.liftweb.sitemap._
-import _root_.net.liftweb.mapper.{DB, Schemifier, DefaultConnectionIdentifier, StandardDBVendor}
-import _root_.com.squeakybeaker.order.model._
-import com.squeakybeaker.order.model.Entity.OrdersPersistence.OrderItemP
+import _root_.net.liftweb.sitemap.Loc._
+import net.liftweb.util.LoanWrapper
+import com.squeakybeaker.order.lib.{DB, UserSession}
+import net.liftweb.sitemap.Loc.If
 
 
 /**
@@ -16,30 +16,19 @@ import com.squeakybeaker.order.model.Entity.OrdersPersistence.OrderItemP
  */
 class Boot {
   def boot {
-    if (!DB.jndiJdbcConnAvailable_?) {
-      val vendor =
-        new StandardDBVendor(Props.get("db.driver") openOr "org.h2.Driver",
-          Props.get("db.url") openOr
-            "jdbc:h2:lift_proto.db;AUTO_SERVER=TRUE",
-          Props.get("db.user"), Props.get("db.password"))
-
-      LiftRules.unloadHooks.append(vendor.closeAllConnections_! _)
-
-      DB.defineConnectionManager(DefaultConnectionIdentifier, vendor)
-    }
-
     // where to search snippet
     LiftRules.addToPackages("com.squeakybeaker.order")
-    Schemifier.schemify(true, Schemifier.infoF _, User, OrderItemP)
 
     // Build SiteMap
     def sitemap() = SiteMap(
       Menu("Home") / "index",
-      Menu("Order") / "order" >>
-        User.AddUserMenusAfter // Simple menu form
-      )
+      Menu("Order") / "order" >> If (UserSession.loggedIn_? _, S ? "Login required"),
+      Menu("Login") / "login"
+    )
 
-    LiftRules.setSiteMapFunc(() => User.sitemapMutator(sitemap()))
+    val (db, dbAccess, access) = DB.profileSettings
+
+    LiftRules.setSiteMapFunc(() => sitemap())
 
     /*
      * Show the spinny image when an Ajax call starts
@@ -55,9 +44,17 @@ class Boot {
 
     LiftRules.early.append(makeUtf8)
 
-    LiftRules.loggedInTest = Full(() => User.loggedIn_?)
+    LiftRules.loggedInTest = Full(() => UserSession.loggedIn_?)
 
-    S.addAround(DB.buildLoanWrapper)
+    LiftRules.allAround.append {
+      new LoanWrapper {
+        def apply[T](f: => T): T = {
+          dbAccess withSession {
+            f
+          }
+        }
+      }
+    }
   }
 
   /**

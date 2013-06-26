@@ -1,11 +1,10 @@
 package com.squeakybeaker.order.snippet
 
-import net.liftweb.mapper.DB
-import java.util.Calendar
 
 import net.liftweb.util._
 import Helpers._
 import java.text.SimpleDateFormat
+import com.squeakybeaker.order.lib.DBAware
 import com.squeakybeaker.order.model.DateProvider
 
 
@@ -13,17 +12,17 @@ import com.squeakybeaker.order.model.DateProvider
  * User: Eugene Dzhurinsky
  * Date: 4/30/13
  */
-object CurrentOrder {
+object CurrentOrder extends DBAware {
 
   def listSummary = {
     val today = new java.sql.Date(DateProvider.getCurrentDate.getTime)
     val yesterday = new java.sql.Date(DateProvider.getPrevDate.getTime)
-    val currentItems = DB.runQuery("select orderItem, count(*) as cnt from orderitems where orderdate = ? group by orderItem", List(today))._2
-    val yesterdayItems = DB.runQuery("select orderItem, count(*) as cnt from orderitems where orderdate = ? group by orderItem", List(yesterday))._2
+    val currentItems = dao.aggregateRecords(today)
+    val yesterdayItems = dao.aggregateRecords(yesterday)
 
-    def mapItems(pName: String)(z: List[String]) = {
+    def mapItems(pName: String)(z: (String,Int)) = {
       z match {
-        case List(name, count) => ("#" + pName + "Name *") #> name & ("#" + pName + "Count *") #> count
+        case (name, count) => ("#" + pName + "Name *") #> name & ("#" + pName + "Count *") #> count
       }
     }
 
