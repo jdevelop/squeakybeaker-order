@@ -83,4 +83,7 @@ class Boot {
   private def makeUtf8(req: HTTPRequest) {
     req.setCharacterEncoding("UTF-8")
   }
+
+  LiftRules.htmlProperties.default.set((r: Req) =>new Html5Properties(r.userAgent))
+
 }
