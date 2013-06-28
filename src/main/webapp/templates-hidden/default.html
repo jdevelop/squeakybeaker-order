@@ -6,6 +6,7 @@
     <meta name="keywords" content=""/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link href="css/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <link href="css/web.css" rel="stylesheet" media="screen"/>
 
     <title>SqueakyBaker Order Tracking system</title>
     <style class="lift:CSS.blueprint"/>
@@ -14,88 +15,6 @@
     <script id="json" src="/classpath/json.js" type="text/javascript"/>
     <style type="text/css">
             /* <![CDATA[ */
-        .edit_error_class {
-            display: block;
-            color: red;
-        }
-
-        .lift_error {
-            color: red;
-        }
-
-        .lift_warning {
-            color: yellow;
-        }
-
-        .lift_notice {
-        }
-
-        .sidebar ul {
-            margin: 0;
-            padding: 0;
-            border-bottom: 1px solid #ccc;
-        }
-
-        .sidebar ul li {
-            margin: 0;
-            padding: 0;
-            list-style: none;
-            border: 1px solid #ccc;
-            border-bottom: none;
-        }
-
-        .sidebar ul li a {
-            display: block;
-            padding: 3px;
-            text-indent: 30px;
-            text-decoration: none;
-        }
-
-        .sidebar ul li span {
-            display: block;
-            padding: 3px;
-            text-indent: 30px;
-            text-decoration: none;
-        }
-
-        .sidebar ul li a:hover {
-            background-color: #eee;
-        }
-
-        .orderMenu td {
-            vertical-align: top;
-        }
-
-        .orderMenu th {
-            text-align: center;
-            width: 33%;
-        }
-
-        .summaryMenu td {
-            vertical-align: top;
-            border-bottom-style: dashed;
-            border-width: 1px;;
-        }
-
-        .left {
-            text-align: left;
-        }
-
-        .center {
-            text-align: center;
-        }
-
-        .heading {
-            font-size: 20px;
-        }
-
-        .summaryMenu th {
-            text-align: center;
-        }
-
-        .listItems li {
-            list-style-type: none;
-        }
 
             /* ]]> */
     </style>
@@ -103,14 +22,14 @@
 <body>
 <div class="container">
     <div class="row">
-        <div class="span*" style="text-align: right">
+        <div class="span*">
             <h1 class="alt">SqueakyBeaker Order<img alt="" id="ajax-loader"
                                                     style="display:none; margin-bottom: 0px; margin-left: 5px"
                                                     src="/images/ajax-loader.gif"/></h1>
         </div>
     </div>
     <div class="row">
-        <div class="column span1 colborder sidebar">
+        <div class="column span2 colborder sidebar">
             <hr class="space"/>
             <span class="lift:Menu.builder"/>
             <div>
@@ -118,7 +37,7 @@
                 <hr class="space"/>
             </div>
         </div>
-        <div class="column span10 last">
+        <div class="column span9 last">
             <div id="content">
                 <!-- The HTML content will go here -->
             </div>
