@@ -9,7 +9,7 @@ import net.liftweb.util.{Props, LoanWrapper}
 import com.squeakybeaker.order.lib.{DB, UserSession}
 import net.liftweb.sitemap.Loc.If
 import com.squeakybeaker.order.authentication.{OAuthTransport, OAuth2Google}
-import com.squeakybeaker.order.dispatch.VerifyUserToken
+import com.squeakybeaker.order.dispatch.{Logout, VerifyUserToken}
 import com.squeakybeaker.order.model.DAO
 
 
@@ -26,7 +26,8 @@ class Boot {
     def sitemap() = SiteMap(
       Menu("Home") / "index",
       Menu("Order") / "order" >> If (UserSession.loggedIn_? _, S ? "Login required"),
-      Menu("Login") / "login" >> If (UserSession.anonymous_? _, S ? "Already authenticated")
+      Menu("Login") / "login" >> If (UserSession.anonymous_? _, S ? "Already authenticated"),
+      Menu("Logout") / "logout" >> If (UserSession.loggedIn_? _, S ? "")
     )
 
     val (db, dbAccess, access) = DB.profileSettings
@@ -63,6 +64,9 @@ class Boot {
     LiftRules.dispatch.append {
       case Req("oauth2callback" :: Nil, _, _) =>
         VerifyUserToken.verifyGoogleOauthToken(tokenVerifier, googleLogin) _
+    }.append {
+      case Req("logout" :: Nil, _, _) =>
+        Logout.logout _
     }
 
 

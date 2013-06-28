@@ -89,7 +89,16 @@ object Entity {
         oi <- OrderItemP if oi.placeDate === date
       } yield oi
       q.groupBy(_.itemName).map {
-        row => (row._1, row._1.length)
+        row => (row._1, row._1.count)
+      }.list
+    }
+
+    def aggregateTypes(date: Date)(implicit s: Session): List[(String, Int)] = {
+      val q = for {
+        oi <- OrderItemP if oi.placeDate === date
+      } yield oi
+      q.groupBy(_.itemType).map {
+        row => (row._1, row._1.count)
       }.list
     }
 
