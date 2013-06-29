@@ -1,42 +1,65 @@
 <div class="lift:surround?with=default;at=content">
-    <form class="lift:MenuProcess?form=post">
+    <script language="JavaScript">
+        function clearSandwiches() {
+            $('#sandwicheslist').find('input').removeAttr('checked');
+        }
+
+        function clearSoups() {
+            $('#soupslist').find('input').removeAttr('checked');
+        }
+
+        function clearSpecials() {
+            $('#specialslist').find('input').removeAttr('checked');
+        }
+    </script>
+    <form id="specialform" class="lift:MenuProcess?form=post">
         <div class="row">
-            <div class="span9 lift:MenuList.listSpecials"><h3>Specials</h3>
-                <ul id="specials" class="listItems">
-                    <li><input id="special" name="special" type="radio" value="?"/><span id="specialtxt">?</span>
+            <div class="span9"><h3>Specials</h3>
+                <ul id="specialslist" class="listItems lift:MenuList.listSpecials">
+                    <li id="specials"><input id="special" name="special" type="radio" value="?"/><span id="specialtxt">?</span>
                     </li>
                 </ul>
             </div>
         </div>
         <div class="row">
             <div class="span9 form-actions form-actions-thin">
-                <input type="submit" class="btn" value="Order special"/>
+                <input name="store" type="submit" class="btn" value="Order special"/>
             </div>
         </div>
     </form>
     <hr/>
-    <form class="lift:MenuProcess?form=post">
+    <form id="regularform" class="lift:MenuProcess?form=post">
         <div class="row">
-            <div class="span9 lift:MenuList.listSoups">
+            <div class="span8">
                 <h3>Soups</h3>
-                <ul id="soups" class="listItems inline-block">
-                    <li><input id="soup" name="soup" type="radio" value="?"/><span id="souptxt">?</span></li>
+                <ul id="soupslist" class="lift:MenuList.listSoups listItems">
+                    <li id="soups"><input id="soup" name="soup" type="radio" value="?"/><span id="souptxt">?</span></li>
                 </ul>
+            </div>
+            <div class="span1">
+                <input type="button" class="btn inline-block" value="Clear"
+                       onclick="javascript: clearSoups();"/>
             </div>
         </div>
         <div class="row">
-            <div class="span9 lift:MenuList.listSandwiches">
+            <div class="span8 lift:MenuList.listSandwiches">
                 <h3>Sandwiches</h3>
-                <ul id="sandwiches" class="listItems inline-block">
-                    <li><input id="sandwich" name="sandwich" type="radio" value="?"/><span id="sandwichtxt">?</span>
+                <ul id="sandwicheslist" class="lift:MenuList.listSoups listItems">
+                    <li id="sandwiches"><input id="sandwich" name="sandwich" type="radio" value="?"/><span
+                            id="sandwichtxt">?</span>
                     </li>
                 </ul>
+            </div>
+            <div class="span1">
+                <input type="button" class="btn inline-block" value="Clear"
+                       onclick="javascript: clearSandwiches()"/>
             </div>
         </div>
         <div class="row">
             <div class="span9 form-actions form-actions-thin">
-                <input type="submit" class="btn" value="Order regular"/>
-                <input type="reset" class="btn" value="Clear"/>
+                <input name="store" type="submit" class="btn" value="Order regular"/>
+                <input type="button" class="btn" value="Get last order" onclick="javascript: document.location.reload();"/>
+                <input name="reject" type="submit" class="btn" value="Remove current order"/>
             </div>
         </div>
     </form>

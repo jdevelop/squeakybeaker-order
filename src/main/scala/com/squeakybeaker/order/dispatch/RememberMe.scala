@@ -21,7 +21,7 @@ object RememberMe extends DBAware {
     LOG.debug("Processing user request")
     req.cookies.filter(_.name == cookieMame).foreach {
       v =>
-        LOG.debug("Found cookie {}", req)
+        LOG.debug("Found cookie {}", v)
         dao.lookup(UUID.fromString(v.value.get)).foreach {
           u =>
             LOG.debug("Found user", u)

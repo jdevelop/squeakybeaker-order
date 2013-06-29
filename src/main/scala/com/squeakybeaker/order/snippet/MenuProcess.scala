@@ -7,6 +7,7 @@ import net.liftweb.util._
 import Helpers._
 import com.squeakybeaker.order.lib.{DBAware, UserSession}
 import com.squeakybeaker.order.model.Entity.{OrderItem, ItemType, OrderItemView}
+import org.slf4j.LoggerFactory
 
 /**
  * User: Eugene Dzhurinsky
@@ -14,12 +15,15 @@ import com.squeakybeaker.order.model.Entity.{OrderItem, ItemType, OrderItemView}
  */
 object MenuProcess extends DBAware {
 
+  val LOG = LoggerFactory.getLogger("com.squeakybeaker.order.snippet.MenuProcess")
+
   def render = {
     var special = ""
     var soup = ""
     var sandwich = ""
 
-    def process() = {
+    def process(saveResults: Boolean)() = {
+      LOG.debug("Running saveResults with {}", saveResults)
       if (UserSession.loggedIn_?) {
 
         def option[T](param: String, f: => T): Option[T] = {
@@ -39,21 +43,20 @@ object MenuProcess extends DBAware {
         // TODO some validation here
         val user = UserSession.is
         dao.removeCurrentOrder(user, new java.sql.Date(currentDate.getTime))
-        List(sandwichItem, soupItem, specialItem).flatten.foreach {
-          case it: OrderItemView => dao.addRecord(user, OrderItem(it.itemName, currentDate, user.email, it.itemType))
+        if (saveResults) {
+          List(sandwichItem, soupItem, specialItem).flatten.foreach {
+            case it: OrderItemView => dao.addRecord(user, OrderItem(it.itemName, currentDate, user.email, it.itemType))
+          }
         }
       }
       S.redirectTo("/index")
     }
 
-    if (UserSession.loggedIn_?) {
-      "name=soup" #> SHtml.onSubmit(soup = _) &
-        "name=special" #> SHtml.onSubmit(special = _) &
-        "name=sandwich" #> SHtml.onSubmit(sandwich = _) &
-        "type=submit" #> SHtml.onSubmitUnit(process)
-    } else {
-      ":submit [disabled]" #> "disabled"
-    }
+    "name=soup" #> SHtml.onSubmit(soup = _) &
+      "name=special" #> SHtml.onSubmit(special = _) &
+      "name=sandwich" #> SHtml.onSubmit(sandwich = _) &
+      "name=reject" #> SHtml.onSubmitUnit(process(false)) &
+      "name=store" #> SHtml.onSubmitUnit(process(true))
 
   }
 

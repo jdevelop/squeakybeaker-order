@@ -26,7 +26,7 @@ object Parser {
 
     abstract class JsoupParser(expr: String, kind: ItemType.Value) extends MenuParser {
       def parse(is: InputStream): Seq[OrderItemView] = {
-        is.select(expr).filter(!_.text().isEmpty).map {
+        is.select(expr).filter(txt => ! txt.text().isEmpty && ! txt.text().startsWith("Add")).map {
           case el: Element => OrderItemView(kind, el.text())
         }
       }

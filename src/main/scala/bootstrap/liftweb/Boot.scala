@@ -10,7 +10,6 @@ import com.squeakybeaker.order.lib.{DB, UserSession}
 import net.liftweb.sitemap.Loc.If
 import com.squeakybeaker.order.authentication.{OAuthTransport, OAuth2Google}
 import com.squeakybeaker.order.dispatch.{RememberMe, Logout, VerifyUserToken}
-import com.squeakybeaker.order.model.DAO
 
 
 /**
