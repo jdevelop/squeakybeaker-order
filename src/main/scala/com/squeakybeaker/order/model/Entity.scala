@@ -2,6 +2,7 @@ package com.squeakybeaker.order.model
 
 import java.sql.Date
 import java.security.MessageDigest
+import java.util.UUID
 
 /**
  * User: Eugene Dzhurinsky
@@ -13,7 +14,7 @@ object Entity {
     val Soup, Sandwich, Special = Value
   }
 
-  case class User(email: String, displayName: String)
+  case class User(id: UUID, email: String, displayName: String)
 
   case class OrderItem(itemName: String, placed: Date, username: String, itemType: ItemType.Value)
 
@@ -25,7 +26,9 @@ object Entity {
 
     import profile.simple._
 
-    object UserP extends Table[(String, String, String)]("users") {
+    object UserP extends Table[(String, String, String, String)]("users") {
+
+      def id = column[String]("uuid", O.PrimaryKey)
 
       def email = column[String]("email", O.NotNull)
 
@@ -33,13 +36,14 @@ object Entity {
 
       def password = column[String]("password", O.NotNull)
 
-      def * = email ~ displayName ~ password
+      def * = id ~ email ~ displayName ~ password
 
     }
 
     def createNew(username: String, displayName: String)(implicit s: Session) = {
-      UserP.insert((username, displayName, md5(username + System.currentTimeMillis().toString)))
-      User(username, displayName)
+      val uuid = UUID.randomUUID()
+      UserP.insert((uuid.toString, username, displayName, md5(username + System.currentTimeMillis().toString)))
+      User(uuid, username, displayName)
     }
 
     def lookup(username: String)(implicit s: Session) = {
@@ -47,7 +51,16 @@ object Entity {
         c <- UserP if c.email === username
       ) yield c
       q.take(1).list().headOption.map {
-        case (uname, dname, pwd) => User(uname, dname)
+        case (id, uname, dname, pwd) => User(UUID.fromString(id), uname, dname)
+      }
+    }
+
+    def lookup(uuid: UUID)(implicit s: Session) = {
+      val q = for (
+        c <- UserP if c.id === uuid.toString
+      ) yield c
+      q.take(1).list().headOption.map {
+        case (id, uname, dname, pwd) => User(UUID.fromString(id), uname, dname)
       }
     }
 

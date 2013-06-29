@@ -25,7 +25,7 @@ object VerifyUserToken {
           accessToken =>
             login.login(accessToken).map {
               u => UserSession.set(u)
-                RedirectResponse("/order")
+                RedirectResponse("/order", RememberMe.userCookie(u))
             }.getOrElse(RedirectResponse("/login"))
         }.get
     }

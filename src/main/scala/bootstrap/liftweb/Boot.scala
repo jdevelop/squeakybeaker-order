@@ -9,7 +9,7 @@ import net.liftweb.util.{Props, LoanWrapper}
 import com.squeakybeaker.order.lib.{DB, UserSession}
 import net.liftweb.sitemap.Loc.If
 import com.squeakybeaker.order.authentication.{OAuthTransport, OAuth2Google}
-import com.squeakybeaker.order.dispatch.{Logout, VerifyUserToken}
+import com.squeakybeaker.order.dispatch.{RememberMe, Logout, VerifyUserToken}
 import com.squeakybeaker.order.model.DAO
 
 
@@ -46,7 +46,7 @@ class Boot {
     LiftRules.ajaxEnd =
       Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
 
-    LiftRules.early.append(makeUtf8)
+    LiftRules.early.append(makeUtf8).append(RememberMe.proceedCookie)
 
     LiftRules.loggedInTest = Full(() => UserSession.loggedIn_?)
 
