@@ -78,3 +78,9 @@
 .listItems li {
     list-style-type: none;
 }
+
+.form-actions-thin {
+    padding: 0px;
+    background-color: transparent;
+    border: none;
+}

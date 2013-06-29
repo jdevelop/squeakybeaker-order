@@ -1,42 +1,43 @@
 <div class="lift:surround?with=default;at=content">
     <form class="lift:MenuProcess?form=post">
-        <table class="orderMenu table table-striped table-bordered table-condensed">
-            <tr>
-                <th colspan="3" class="form-actions">
-                    <input type="submit" class="btn" value="Place order"/>
-                    <input type="reset" class="btn" value="Clear"/>
-                </th>
-            </tr>
-            <tr>
-                <th>Soups</th>
-                <th>Sandwiches</th>
-                <th>Specials</th>
-            </tr>
-            <tr>
-                <td class="lift:MenuList.listSoups">
-                    <ul id="soups" class="listItems">
-                        <li><input id="soup" name="soup" type="radio" value="?"/><span id="souptxt">?</span></li>
-                    </ul>
-                </td>
-                <td class="lift:MenuList.listSandwiches">
-                    <ul id="sandwiches" class="listItems">
-                        <li><input id="sandwich" name="sandwich" type="radio" value="?"/><span id="sandwichtxt">?</span>
-                        </li>
-                    </ul>
-                </td>
-                <td class="lift:MenuList.listSpecials">
-                    <ul id="specials" class="listItems">
-                        <li><input id="special" name="special" type="radio" value="?"/><span id="specialtxt">?</span>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-            <tr>
-                <th colspan="3" class="form-actions">
-                    <input type="submit" class="btn" value="Place order"/>
-                    <input type="reset" class="btn" value="Clear">
-                </th>
-            </tr>
-        </table>
+        <div class="row">
+            <div class="span9 lift:MenuList.listSpecials"><h3>Specials</h3>
+                <ul id="specials" class="listItems">
+                    <li><input id="special" name="special" type="radio" value="?"/><span id="specialtxt">?</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span9 form-actions form-actions-thin">
+                <input type="submit" class="btn" value="Order special"/>
+            </div>
+        </div>
+    </form>
+    <hr/>
+    <form class="lift:MenuProcess?form=post">
+        <div class="row">
+            <div class="span9 lift:MenuList.listSoups">
+                <h3>Soups</h3>
+                <ul id="soups" class="listItems inline-block">
+                    <li><input id="soup" name="soup" type="radio" value="?"/><span id="souptxt">?</span></li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span9 lift:MenuList.listSandwiches">
+                <h3>Sandwiches</h3>
+                <ul id="sandwiches" class="listItems inline-block">
+                    <li><input id="sandwich" name="sandwich" type="radio" value="?"/><span id="sandwichtxt">?</span>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span9 form-actions form-actions-thin">
+                <input type="submit" class="btn" value="Order regular"/>
+                <input type="reset" class="btn" value="Clear"/>
+            </div>
+        </div>
     </form>
 </div>
