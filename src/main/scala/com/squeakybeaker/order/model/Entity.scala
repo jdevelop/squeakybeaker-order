@@ -39,7 +39,7 @@ object Entity {
 
     def createNew(username: String, displayName: String)(implicit s: Session) = {
       UserP.insert((username, displayName, md5(username + System.currentTimeMillis().toString)))
-      User(username,displayName)
+      User(username, displayName)
     }
 
     def lookup(username: String)(implicit s: Session) = {
@@ -100,6 +100,22 @@ object Entity {
       q.groupBy(_.itemType).map {
         row => (row._1, row._1.count)
       }.list
+    }
+
+    def loadOrder(date: Date, user: User)(implicit s: Session): List[OrderItemView] = {
+      (for {
+        oi <- OrderItemP if (oi.placeDate === date && oi.username === user.email)
+      } yield oi).list.map {
+        case oip => OrderItemView(Entity.ItemType.withName(oip._4), oip._1)
+      }
+    }
+
+    def loadLastOrder(user: User, itemType: ItemType.Value)(implicit s: Session): Option[OrderItemView] = {
+      (for {
+        oi <- OrderItemP if (oi.itemType === itemType.toString && oi.username === user.email)
+      } yield oi).sortBy(_.placeDate.desc.nullsDefault).firstOption.map {
+        case oip => OrderItemView(Entity.ItemType.withName(oip._4), oip._1)
+      }
     }
 
     def removeCurrentOrder(user: User, date: Date)(implicit s: Session) {
