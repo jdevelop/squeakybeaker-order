@@ -27,4 +27,12 @@ object StaticData {
     OrderItemView(Soup, "Indian Chicken Soup (Gluten Free, Lactose Free)"),
     OrderItemView(Soup, "North African Cauliflower (Vegan, Gluten Free)"))
 
+  val salads = Seq(
+    OrderItemView(Salad,"Greek Salad romaine lettuce, tomatoes, red onion, cucumbers, kalamata olives, imported feta and our homemade lemon vinaigrette 7.01"),
+    OrderItemView(Salad,"Classic Caesar Salad romaine lettuce, imported parmesan, homemade caesar dressing 6.25"),
+    OrderItemView(Salad,"Mixed Green Salad with tomato, cucumber, red onion and our homemade dijon vinaigrette 6.54"),
+    OrderItemView(Salad,"Spinach Salad with bleu cheese, toasted walnuts, pears, and our own homemade bacon sherry vinaigrette 7.71"),
+    OrderItemView(Salad,"Cobb Salad our mixed greens salad with avocado, bleu cheese, bacon, egg, grilled chicken and homemade balsamic vinaigrette 8.25")
+  )
+
 }

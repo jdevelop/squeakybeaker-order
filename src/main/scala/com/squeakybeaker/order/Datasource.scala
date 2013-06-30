@@ -47,6 +47,7 @@ object Datasource {
         case Soup => new HttpSource("http://www.squeakybeaker.com/")
         case Special => new HttpSource("http://www.squeakybeaker.com/")
         case Sandwich => new HttpSource("http://www.squeakybeaker.com/?page_id=91")
+        case Salad => new HttpSource("http://www.squeakybeaker.com/?page_id=91")
       }
       stream.stream(Parser.Parsers.getParser(kind).parse)
     }

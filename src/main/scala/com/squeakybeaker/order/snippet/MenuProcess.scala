@@ -21,6 +21,7 @@ object MenuProcess extends DBAware {
     var special = ""
     var soup = ""
     var sandwich = ""
+    var salad = ""
 
     def process(saveResults: Boolean)() = {
       LOG.debug("Running saveResults with {}", saveResults)
@@ -37,6 +38,7 @@ object MenuProcess extends DBAware {
         val sandwichItem = option(sandwich, OrderItemView(ItemType.Sandwich, sandwich))
         val soupItem = option(soup, OrderItemView(ItemType.Soup, soup))
         val specialItem = option(special, OrderItemView(ItemType.Special, special))
+        val saladItem = option(salad, OrderItemView(ItemType.Salad, salad))
         val email = UserSession.is.email
         val currentDate = new java.sql.Date(DateProvider.getCurrentDate().getTime)
         implicit val p = (email, currentDate)
@@ -44,7 +46,7 @@ object MenuProcess extends DBAware {
         val user = UserSession.is
         dao.removeCurrentOrder(user, new java.sql.Date(currentDate.getTime))
         if (saveResults) {
-          List(sandwichItem, soupItem, specialItem).flatten.foreach {
+          List(sandwichItem, soupItem, specialItem, saladItem).flatten.foreach {
             case it: OrderItemView => dao.addRecord(user, OrderItem(it.itemName, currentDate, user.email, it.itemType))
           }
         }
@@ -55,6 +57,7 @@ object MenuProcess extends DBAware {
     "name=soup" #> SHtml.onSubmit(soup = _) &
       "name=special" #> SHtml.onSubmit(special = _) &
       "name=sandwich" #> SHtml.onSubmit(sandwich = _) &
+      "name=salad" #> SHtml.onSubmit(salad = _) &
       "name=reject" #> SHtml.onSubmitUnit(process(false)) &
       "name=store" #> SHtml.onSubmitUnit(process(true))
 

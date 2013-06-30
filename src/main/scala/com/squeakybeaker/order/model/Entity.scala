@@ -14,7 +14,7 @@ object Entity {
   val LOG = LoggerFactory.getLogger("com.squeakybeaker.order.model.Entity")
 
   object ItemType extends Enumeration {
-    val Soup, Sandwich, Special = Value
+    val Soup, Sandwich, Special, Salad = Value
   }
 
   case class User(id: UUID, email: String, displayName: String)

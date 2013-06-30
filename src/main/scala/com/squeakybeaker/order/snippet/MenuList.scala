@@ -39,4 +39,6 @@ object MenuList extends DBAware {
 
   def listSandwiches = list(ItemType.Sandwich, "sandwiches", "sandwich") _
 
+  def listSalads = list(ItemType.Salad, "salads", "salad") _
+
 }

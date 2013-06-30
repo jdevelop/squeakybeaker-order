@@ -34,4 +34,10 @@ class ParserTest extends FlatSpec {
     assert(StaticData.sandwiches === sandwiches)
   }
 
+  it should "correctly parse salads" in {
+    val parser = getParser(ItemType.Salad)
+    val salads = parser.parse(classOf[ParserTest].getResourceAsStream("/sandwich.html"))
+    assert(StaticData.salads === salads)
+  }
+
 }

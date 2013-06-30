@@ -1,15 +1,7 @@
 <div class="lift:surround?with=default;at=content">
     <script language="JavaScript">
-        function clearSandwiches() {
-            $('#sandwicheslist').find('input').removeAttr('checked');
-        }
-
-        function clearSoups() {
-            $('#soupslist').find('input').removeAttr('checked');
-        }
-
-        function clearSpecials() {
-            $('#specialslist').find('input').removeAttr('checked');
+        function clearFormData(idname) {
+            $('#'+idname).find('input').removeAttr('checked');
         }
     </script>
     <form id="specialform" class="lift:MenuProcess?form=post">
@@ -38,13 +30,13 @@
             </div>
             <div class="span1">
                 <input type="button" class="btn inline-block" value="Clear"
-                       onclick="javascript: clearSoups();"/>
+                       onclick="javascript: clearFormData('soupslist');"/>
             </div>
         </div>
         <div class="row">
-            <div class="span8 lift:MenuList.listSandwiches">
+            <div class="span8">
                 <h3>Sandwiches</h3>
-                <ul id="sandwicheslist" class="lift:MenuList.listSoups listItems">
+                <ul id="sandwicheslist" class="lift:MenuList.listSandwiches listItems">
                     <li id="sandwiches"><input id="sandwich" name="sandwich" type="radio" value="?"/><span
                             id="sandwichtxt">?</span>
                     </li>
@@ -52,7 +44,21 @@
             </div>
             <div class="span1">
                 <input type="button" class="btn inline-block" value="Clear"
-                       onclick="javascript: clearSandwiches()"/>
+                       onclick="javascript: clearFormData('sandwicheslist')"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="span8">
+                <h3>Salads</h3>
+                <ul id="saladslist" class="lift:MenuList.listSalads listItems">
+                    <li id="salads"><input id="salad" name="salad" type="radio" value="?"/><span
+                            id="saladtxt">?</span>
+                    </li>
+                </ul>
+            </div>
+            <div class="span1">
+                <input type="button" class="btn inline-block" value="Clear"
+                       onclick="javascript: clearFormData('saladslist')"/>
             </div>
         </div>
         <div class="row">

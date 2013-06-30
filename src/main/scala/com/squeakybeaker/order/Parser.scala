@@ -26,13 +26,15 @@ object Parser {
 
     abstract class JsoupParser(expr: String, kind: ItemType.Value) extends MenuParser {
       def parse(is: InputStream): Seq[OrderItemView] = {
-        is.select(expr).filter(txt => ! txt.text().isEmpty && ! txt.text().startsWith("Add")).map {
+        is.select(expr).filter(txt => !txt.text().isEmpty && !txt.text().startsWith("Add")).map {
           case el: Element => OrderItemView(kind, el.text())
         }
       }
     }
 
     private object SoupP extends JsoupParser("h2:has(strong:contains(Soups:)) ~ div, h2:has(strong:contains(Soups:)) ~ p", ItemType.Soup)
+
+    private object SaladP extends JsoupParser("p:has(strong:contains(Salads)) ~ p", ItemType.Salad)
 
     private object SpecialP extends JsoupParser("h4:contains(Lunch Special) + p", ItemType.Special)
 
@@ -43,6 +45,7 @@ object Parser {
         case ItemType.Soup => SoupP
         case ItemType.Sandwich => SandwichP
         case ItemType.Special => SpecialP
+        case ItemType.Salad => SaladP
       }
     }
 
