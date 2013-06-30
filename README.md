@@ -1,2 +1,2 @@
-Simple lunch ordering for [Squeakybaker](http://www.squeakybeaker.com/)
+Simple lunch ordering for [Squeakybaker](http://www.squeakybeaker.com/) [![Build Status](https://api.travis-ci.org/jdevelop/squeakybeaker-order.png)] (http://travis-ci.org/jdevelop/squeakybeaker-order)
 =========
