@@ -19,7 +19,6 @@ object StaticData {
     OrderItemView(Sandwich, "#7 Chicken Salad with granny smith apples and lettuce"),
     OrderItemView(Sandwich, "#8 Grilled Vegetable Panini grilled eggplant zucchini, goat cheese, roasted red peppers and garlic aioli"),
     OrderItemView(Sandwich, "#9 Chicken Melt – grilled chicken, melted cheddar, avocado, honey mustard, mayo, lettuce, tomato and red onion"),
-    OrderItemView(Sandwich, "Add Bacon 2.00"),
     OrderItemView(Sandwich, "#10 The Rachel – grilled turkey, melted swiss, russian dressing and homemade coleslaw"),
     OrderItemView(Sandwich, "#11 The Italian – imported genoa salami, mortadella, viginia ham, melted provolone, lettuce, tomato, pickles, onions, mayo, dijon, extra virgin olive oil and vinegar"),
     OrderItemView(Sandwich, "#12 Tuna Melt – our homemade tuna salad with slices of tomato and melted swiss"))
