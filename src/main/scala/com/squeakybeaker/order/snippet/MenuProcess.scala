@@ -51,7 +51,7 @@ object MenuProcess extends DBAware {
           }
         }
       }
-      S.redirectTo("/index")
+      S.redirectTo("/current")
     }
 
     "name=soup" #> SHtml.onSubmit(soup = _) &
