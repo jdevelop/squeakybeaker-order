@@ -19,6 +19,7 @@ class OAuth2Google(dao: DAO) extends OAuth2 with DBAware {
 
   override def login(token: String): Option[User] = {
     val url: String = "https://www.googleapis.com/oauth2/v1/userinfo?alt=json&access_token=" + token
+    LOG.debug("Accessing url: {}" + url)
     import net.liftweb.json.JsonParser._
     try {
       val mapVals = parse(retrievePage(url).mkString).asInstanceOf[JObject].values
@@ -49,13 +50,17 @@ object OAuth2Google {
     import scalaj.http._
     LOG.debug("Getting access token: {}", token)
     try {
-      val response = Http.post("https://accounts.google.com/o/oauth2/token").params(
+      val url = "https://accounts.google.com/o/oauth2/token"
+      LOG.debug("Sending request to {}", url)
+      val prms = List(
         "code" -> token,
         "redirect_uri" -> c.redirect,
         "client_id" -> c.cid,
         "client_secret" -> c.secret,
         "grant_type" -> "authorization_code"
-      ).asString
+      )
+      LOG.debug("Sending request to {} => {}", url, prms)
+      val response = Http.post(url).params(prms).asString
       LOG.debug("Oauth response: {}", response)
       import net.liftweb.json.JsonParser._
       val mapVals = parse(response).asInstanceOf[JObject].values
