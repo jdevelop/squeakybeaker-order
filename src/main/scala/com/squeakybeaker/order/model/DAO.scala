@@ -8,7 +8,7 @@ import com.squeakybeaker.order.lib.DBAware
  * Date: 6/25/13
  */
 case class DAO(profile: ExtendedProfile)
-  extends Entity.OrdersPersistence with Entity.UserPersistence with DBAware
+  extends Entity.UserOrderLink with Entity.OrdersPersistence with Entity.UserPersistence with DBAware
   with DatabaseProfile {
 
   def create = {

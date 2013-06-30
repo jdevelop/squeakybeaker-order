@@ -84,3 +84,17 @@
     background-color: transparent;
     border: none;
 }
+
+.username {
+    font-size: 14px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.centered {
+    text-align: center;
+}
+
+.padding-5 {
+    padding: 5px;
+}

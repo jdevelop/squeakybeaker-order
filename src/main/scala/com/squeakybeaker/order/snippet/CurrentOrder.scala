@@ -20,7 +20,7 @@ object CurrentOrder extends DBAware {
     val currentItems = dao.aggregateRecords(today)
     val yesterdayItems = dao.aggregateRecords(yesterday)
 
-    def mapItems(pName: String)(z: (String,Int)) = {
+    def mapItems(pName: String)(z: (String, Int)) = {
       z match {
         case (name, count) => ("#" + pName + "Name *") #> name & ("#" + pName + "Count *") #> count
       }
@@ -30,6 +30,19 @@ object CurrentOrder extends DBAware {
       "#yesterdayDate *" #> new SimpleDateFormat("MM-dd-yyyy").format(yesterday) &
       "#today *" #> currentItems.map(mapItems("today")) &
       "#yesterday *" #> yesterdayItems.map(mapItems("yesterday"))
+  }
+
+  def listCurrentOrders = {
+    val today = new java.sql.Date(DateProvider.getCurrentDate.getTime)
+    val itemz = dao.loadOrdersForToday(today).groupBy {
+      case (item, user) => user._3
+    }
+    "#listItems *" #> itemz.map {
+      case (name, orderz) => "#user *" #> name &
+        "#orders *" #> orderz.map {
+          it => "#order *" #> it._1._1
+        }
+    }
   }
 
 }

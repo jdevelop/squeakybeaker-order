@@ -1,6 +1,6 @@
 package bootstrap.liftweb
 
- import _root_.net.liftweb.common._
+import _root_.net.liftweb.common._
 import _root_.net.liftweb.http._
 import _root_.net.liftweb.http.provider._
 import _root_.net.liftweb.sitemap._
@@ -24,9 +24,10 @@ class Boot {
     // Build SiteMap
     def sitemap() = SiteMap(
       Menu("Home") / "index",
-      Menu("Order") / "order" >> If (UserSession.loggedIn_? _, S ? "Login required"),
-      Menu("Login") / "login" >> If (UserSession.anonymous_? _, S ? "Already authenticated"),
-      Menu("Logout") / "logout" >> If (UserSession.loggedIn_? _, S ? "")
+      Menu("Order") / "order" >> If(UserSession.loggedIn_? _, S ? "Login required"),
+      Menu("Login") / "login" >> If(UserSession.anonymous_? _, S ? "Already authenticated"),
+      Menu("Current") / "current" >> If(UserSession.loggedIn_? _, S ? "Already authenticated"),
+      Menu("Logout") / "logout" >> If(UserSession.loggedIn_? _, S ? "")
     )
 
     val (db, dbAccess, access) = DB.profileSettings
@@ -87,6 +88,6 @@ class Boot {
     req.setCharacterEncoding("UTF-8")
   }
 
-  LiftRules.htmlProperties.default.set((r: Req) =>new Html5Properties(r.userAgent))
+  LiftRules.htmlProperties.default.set((r: Req) => new Html5Properties(r.userAgent))
 
 }

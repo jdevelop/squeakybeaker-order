@@ -3,12 +3,15 @@ package com.squeakybeaker.order.model
 import java.sql.Date
 import java.security.MessageDigest
 import java.util.UUID
+import org.slf4j.LoggerFactory
 
 /**
  * User: Eugene Dzhurinsky
  * Date: 4/14/13
  */
 object Entity {
+
+  val LOG = LoggerFactory.getLogger("com.squeakybeaker.order.model.Entity")
 
   object ItemType extends Enumeration {
     val Soup, Sandwich, Special = Value
@@ -94,7 +97,7 @@ object Entity {
     }
 
     def addRecord(user: User, item: OrderItem)(implicit s: Session) {
-      OrderItemP.insert((item.itemName, item.placed, user.email, item.itemType.toString))
+      OrderItemP.insert((item.itemName, item.placed, user.id.toString, item.itemType.toString))
     }
 
     def aggregateRecords(date: Date)(implicit s: Session): List[(String, Int)] = {
@@ -117,7 +120,7 @@ object Entity {
 
     def loadOrder(date: Date, user: User)(implicit s: Session): List[OrderItemView] = {
       (for {
-        oi <- OrderItemP if (oi.placeDate === date && oi.username === user.email)
+        oi <- OrderItemP if (oi.placeDate === date && oi.username === user.id.toString)
       } yield oi).list.map {
         case oip => OrderItemView(Entity.ItemType.withName(oip._4), oip._1)
       }
@@ -125,7 +128,7 @@ object Entity {
 
     def loadLastOrder(user: User, itemType: ItemType.Value)(implicit s: Session): Option[OrderItemView] = {
       (for {
-        oi <- OrderItemP if (oi.itemType === itemType.toString && oi.username === user.email)
+        oi <- OrderItemP if (oi.itemType === itemType.toString && oi.username === user.id.toString)
       } yield oi).sortBy(_.placeDate.desc.nullsDefault).firstOption.map {
         case oip => OrderItemView(Entity.ItemType.withName(oip._4), oip._1)
       }
@@ -133,9 +136,28 @@ object Entity {
 
     def removeCurrentOrder(user: User, date: Date)(implicit s: Session) {
       (for {
-        oi <- OrderItemP if oi.username === user.email && oi.placeDate === date
+        oi <- OrderItemP if oi.username === user.id.toString && oi.placeDate === date
       } yield oi).delete
     }
+
+  }
+
+  trait UserOrderLink {
+
+    this: DatabaseProfile with UserPersistence with OrdersPersistence =>
+
+    import profile.simple._
+
+    def loadOrdersForToday(date: Date)(implicit s: Session) = {
+      val q = for {
+        oi <- OrderItemP if oi.placeDate === date
+        u <- UserP if u.id === oi.username
+      } yield (oi, u)
+      val itemz = q.sortBy(_._2.displayName).list
+      LOG.debug("List of items: {}", itemz)
+      itemz
+    }
+
 
   }
 
