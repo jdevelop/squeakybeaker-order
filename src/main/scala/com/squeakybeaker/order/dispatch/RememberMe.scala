@@ -42,4 +42,12 @@ object RememberMe extends DBAware {
     cookie
   }
 
+  def expireCookie = {
+    val cookie = HTTPCookie(
+      cookieMame, "").
+      copy(maxAge = Full(1))
+    LOG.debug("Reset cookie: {}", cookie)
+    cookie
+  }
+
 }
