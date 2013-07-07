@@ -6,6 +6,7 @@ import net.liftweb.http.provider.{HTTPCookie, HTTPRequest}
 import net.liftweb.common.Full
 import org.slf4j.LoggerFactory
 import com.squeakybeaker.order.model.Entity.User
+import net.liftweb.http.{S, LiftSession}
 
 /**
  * User: Eugene Dzhurinsky
@@ -17,8 +18,9 @@ object RememberMe extends DBAware {
 
   private val cookieMame = "cc4b55f955a498bf7f2302eeaa795b98"
 
-  def proceedCookie(req: HTTPRequest) = {
+  def proceedCookie(sess: LiftSession) = {
     LOG.debug("Processing user request")
+    val req = S.request.get
     req.cookies.filter(_.name == cookieMame).foreach {
       v =>
         LOG.debug("Found cookie {}", v)

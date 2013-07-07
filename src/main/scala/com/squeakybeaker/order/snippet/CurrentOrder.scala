@@ -33,7 +33,7 @@ object CurrentOrder extends DBAware {
   }
 
   def listCurrentOrders = {
-    val today = new java.sql.Date(DateProvider.getCurrentDate.getTime)
+    val today = new java.sql.Date(DateProvider.getCurrentLunchDate().getTime)
     val itemz = dao.loadOrdersForToday(today).groupBy {
       case (item, user) => user._3
     }

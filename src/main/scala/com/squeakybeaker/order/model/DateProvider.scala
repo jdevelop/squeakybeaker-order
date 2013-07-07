@@ -16,6 +16,14 @@ object DateProvider {
     calendar.getTime
   }
 
+  def getCurrentLunchDate() = {
+    val calendar = Calendar.getInstance()
+    if (calendar.get(Calendar.HOUR_OF_DAY) > 14) {
+      calendar.add(Calendar.DATE, 1)
+    }
+    calendar.getTime
+  }
+
   def getPrevDate() = {
     val calendar = Calendar.getInstance()
     calendar.setTime(getCurrentDate())

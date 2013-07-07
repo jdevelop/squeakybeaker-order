@@ -37,6 +37,7 @@ object DB {
 
         val access = new DAO(db)
 
+/*
         dbAccess withSession {
           try {
             access.create
@@ -44,6 +45,7 @@ object DB {
             case e: Exception =>
           }
         }
+*/
         (db, dbAccess, access)
     }
 

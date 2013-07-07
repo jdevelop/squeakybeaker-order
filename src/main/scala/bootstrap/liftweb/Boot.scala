@@ -46,7 +46,9 @@ class Boot {
     LiftRules.ajaxEnd =
       Full(() => LiftRules.jsArtifacts.hide("ajax-loader").cmd)
 
-    LiftRules.early.append(makeUtf8).append(RememberMe.proceedCookie)
+    LiftRules.early.append(makeUtf8)
+
+    LiftSession.onSetupSession = List(RememberMe.proceedCookie _)
 
     LiftRules.loggedInTest = Full(() => UserSession.loggedIn_?)
 
