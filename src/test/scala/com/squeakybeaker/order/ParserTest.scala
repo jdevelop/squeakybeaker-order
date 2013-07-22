@@ -25,7 +25,7 @@ class ParserTest extends FlatSpec {
   it should "correctly parse specials" in {
     val parser = getParser(ItemType.Special)
     val specials = parser.parse(classOf[ParserTest].getResourceAsStream("/index.html"))
-    assert(Seq(OrderItemView(ItemType.Special, "Mac and Cheese with Ham and Greens Salad 10.95")) === specials)
+    assert(Seq(OrderItemView(ItemType.Special,"Anthony’s Homemade Egg Salad Sandwich with Bacon and Tomatoes on your choice of Bread- 9")) === specials)
   }
 
   it should "correctly parse sandwiches" in {

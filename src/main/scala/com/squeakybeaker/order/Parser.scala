@@ -32,11 +32,11 @@ object Parser {
       }
     }
 
-    private object SoupP extends JsoupParser("h2:has(strong:contains(Soups:)) ~ div, h2:has(strong:contains(Soups:)) ~ p", ItemType.Soup)
+    private object SoupP extends JsoupParser("p:has(strong:contains(Soups:)) ~ p", ItemType.Soup)
 
     private object SaladP extends JsoupParser("p:has(strong:contains(Salads)) ~ p", ItemType.Salad)
 
-    private object SpecialP extends JsoupParser("h4:contains(Lunch Special) + p", ItemType.Special)
+    private object SpecialP extends JsoupParser("h4:contains(Special:) + p", ItemType.Special)
 
     private object SandwichP extends JsoupParser("td:has(h4 > span:contains(Our Top Twelve)) > p", ItemType.Sandwich)
 

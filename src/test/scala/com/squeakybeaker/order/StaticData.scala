@@ -23,9 +23,9 @@ object StaticData {
     OrderItemView(Sandwich, "#11 The Italian – imported genoa salami, mortadella, viginia ham, melted provolone, lettuce, tomato, pickles, onions, mayo, dijon, extra virgin olive oil and vinegar"),
     OrderItemView(Sandwich, "#12 Tuna Melt – our homemade tuna salad with slices of tomato and melted swiss"))
 
-  val soups = Seq(OrderItemView(Soup, "Spicy Red Kidney Bean (Vegan, Gluten Free)"),
-    OrderItemView(Soup, "Indian Chicken Soup (Gluten Free, Lactose Free)"),
-    OrderItemView(Soup, "North African Cauliflower (Vegan, Gluten Free)"))
+  val soups =Seq(OrderItemView(Soup,"Mulligatawny (Gluten Free, Lactose Free, Vegan)"),
+    OrderItemView(Soup,"Spicy Red Kidney Bean (Vegan, Gluten Free, Lactose Free)"),
+    OrderItemView(Soup,"Vichyssoise – A French Chilled Potato Leak (Vegetarian, Gluten Free)"))
 
   val salads = Seq(
     OrderItemView(Salad,"Greek Salad romaine lettuce, tomatoes, red onion, cucumbers, kalamata olives, imported feta and our homemade lemon vinaigrette 7.01"),
